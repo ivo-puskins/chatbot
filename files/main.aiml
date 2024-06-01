@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+<category>
+   <pattern> <set>greetings</set> </pattern>
+   <template>
+        <think><set name="topic">booking</set></think>
+        <random>
+            <li>Hello! Are you interested in booking a flight with SpaceXStarship?</li>
+            <li>Hi there! Ready to book a trip to space with SpaceXStarship?</li>
+            <li>Welcome! Looking to secure a seat aboard SpaceXStarship?</li>
+        </random>
+   </template>
+</category>
+<category>
+   <pattern>^ <set>greetings</set> ^</pattern>
+   <template>
+      <srai> <star index="2"/> </srai>
+   </template>
+</category>
+
+<topic name="booking">
+    <category>
+        <pattern>*</pattern>
+        <template>
+            I'm sorry, I didn't catch that. Are you looking to book a flight with SpaceXStarship?
+        </template>
+    </category>
+    <category>
+        <pattern><set>yesset</set></pattern>
+        <template>
+            <think><set name="topic">seat class</set></think>
+            Which class would you like to book: Economy, Business, or First Class?
+        </template>
+    </category>
+    <category>
+        <pattern><set>noset</set></pattern>
+        <template>
+            Alright, let me know if you change your mind. Have a great day!
+        </template>
+    </category>
+</topic>
+
+<topic name="seat class">
+    <category>
+        <pattern>*</pattern>
+        <template>
+            <think><set name="seat_class"><star/></set></think>
+            <think><set name="topic">luggage</set></think>
+            Will you also be checking in any luggage?
+        </template>
+    </category>
+</topic>
+
+<topic name="luggage">
+    <category>
+        <pattern><set>yesset</set></pattern>
+        <template>
+            <think><set name="luggage">yes</set></think>
+            <think><set name="topic">time</set></think>
+            Great! Now, let's choose a departure date. Here are a few options: July 15th, August 1st, September 10th. Which date works best for you?
+        </template>
+    </category>
+    <category>
+        <pattern><set>noset</set></pattern>
+        <template>
+            <think><set name="luggage">no</set></think>
+            <think><set name="topic">time</set></think>
+            Understood. Let's proceed to choosing a departure date. Here are a few options: July 15th, August 1st, September 10th. Which date works best for you?
+        </template>
+    </category>
+</topic>
+
+<topic name="time">
+    <category>
+        <pattern>*</pattern>
+        <template>
+            <think><set name="departure_date"><star/></set></think>
+            <think><set name="topic">confirmation</set></think>
+            Your flight is booked for <get name="departure_date"/>. Please confirm your details.
+        </template>
+    </category>
+</topic>
+
+<topic name="confirmation">
+    <category>
+        <pattern><set>yesset</set></pattern>
+        <template>
+            Your flight is confirmed! Have a fantastic journey with SpaceXStarship!
+        </template>
+    </category>
+    <category>
+        <pattern><set>noset</set></pattern>
+        <template>
+            Okay, let's go back and make any necessary changes.
+            <srai>booking</srai>
+        </template>
+    </category>
+</topic>
+
+</aiml>
